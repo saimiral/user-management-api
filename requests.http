@@ -6,6 +6,6 @@ POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "name": "Saimir",
-  "age": 22
+  "name": "",
+  "age": 1
 }

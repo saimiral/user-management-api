@@ -3,6 +3,7 @@ package com.saimiral.usermanagement.controller;
 
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody User user){
+    public User createUser(@Valid @RequestBody User user){
         return service.saveUser(user);
     }
 }
