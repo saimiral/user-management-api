@@ -1,0 +1,11 @@
+### GET USERS
+GET http://localhost:8080/users
+
+### CREATE USER
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "Saimir",
+  "age": 22
+}

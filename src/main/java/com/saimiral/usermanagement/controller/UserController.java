@@ -3,8 +3,7 @@ package com.saimiral.usermanagement.controller;
 
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,10 @@ public class UserController {
     @GetMapping("/users")
     public List<User> getAllUsers(){
         return service.getAllUsers();
+    }
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user){
+        return service.saveUser(user);
     }
 }
