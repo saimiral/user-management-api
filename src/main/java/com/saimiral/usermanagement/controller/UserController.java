@@ -1,6 +1,7 @@
 package com.saimiral.usermanagement.controller;
 
 
+import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.service.UserService;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user){
-        return service.saveUser(user);
+    public User createUser(@Valid @RequestBody UserCreateDTO dto){
+        return service.saveUser(dto);
     }
 }

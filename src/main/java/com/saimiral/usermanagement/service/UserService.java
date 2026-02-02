@@ -1,5 +1,6 @@
 package com.saimiral.usermanagement.service;
 
+import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
@@ -21,8 +22,11 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User saveUser(User user){
+    public User saveUser(UserCreateDTO dto){
         try {
+            User user = new User();
+            user.setName(dto.getName());
+            user.setAge(dto.getAge());
             return repository.save(user);
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
