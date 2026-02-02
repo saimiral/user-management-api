@@ -11,10 +11,8 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @Min(18)
     private int age;
 
     public User() {}
