@@ -5,6 +5,7 @@ import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.service.UserServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,5 +26,11 @@ public class UserController {
     @PostMapping("/users")
     public UserResponseDTO createUser(@Valid @RequestBody UserCreateDTO dto){
         return service.saveUser(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<void> deleteUser(@PathVariable Long id){
+        service.deleteUSer(id);
+        return ResponseEntity.noContent().build();
     }
 }

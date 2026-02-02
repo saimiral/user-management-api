@@ -4,6 +4,7 @@ import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
+import com.saimiral.usermanagement.exception.UserNotFoundException;
 import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService{
+
     private final UserRepository repository;
     private final UserMapper mapper;
 
@@ -42,5 +44,12 @@ public class UserServiceImpl implements UserService{
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
+    }
+
+    public void deleteUSer(Long id){
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        repository.delete(user);
     }
 }
