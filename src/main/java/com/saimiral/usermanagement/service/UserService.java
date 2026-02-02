@@ -5,12 +5,14 @@ import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
     private final UserRepository repository;
 
