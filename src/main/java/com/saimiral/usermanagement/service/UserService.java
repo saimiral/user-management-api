@@ -34,16 +34,15 @@ public class UserService {
 
     public UserResponseDTO saveUser(UserCreateDTO dto){
         try {
-            User user = new User();
-            user.setName(dto.getName());
-            user.setAge(dto.getAge());
-
-            UserResponseDTO response = new UserResponseDTO();
-            response.setId(user.getId());
-            response.setName(user.getName());
-            response.setAge(user.getAge());
+            User user = new User(dto.getName(), dto.getAge());
 
             User savedUser = repository.save(user);
+
+            UserResponseDTO response = new UserResponseDTO();
+            response.setId(savedUser.getId());
+            response.setName(savedUser.getName());
+            response.setAge(savedUser.getAge());
+
             return response;
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
