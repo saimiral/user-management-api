@@ -4,6 +4,7 @@ import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
+import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,20 +16,18 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService{
     private final UserRepository repository;
+    private final UserMapper mapper;
 
-    private UserResponseDTO mapToResponse(User user){
-        return new UserResponseDTO(user.getId(), user.getName(), user.getAge());
-    }
-
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDTO> getAllUsers(){
         return repository.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(mapper::toResponse)
 
                 .toList();
     }
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService{
 
             User savedUser = repository.save(user);
 
-            return mapToResponse(savedUser);
+            return mapper.toResponse(savedUser);
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
