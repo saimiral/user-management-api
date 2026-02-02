@@ -7,13 +7,16 @@ import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
 @Service
 public class UserService {
     private final UserRepository repository;
+
+    private UserResponseDTO mapToResponse(User user){
+        return new UserResponseDTO(user.getId(), user.getName(), user.getAge());
+    }
 
     public UserService(UserRepository repository) {
         this.repository = repository;
@@ -22,9 +25,8 @@ public class UserService {
     public List<UserResponseDTO> getAllUsers(){
         return repository.findAll()
                 .stream()
-                .map(user -> {
-                    return new UserResponseDTO(user.getId(), user.getName(), user.getAge());;
-                })
+                .map(this::mapToResponse)
+
                 .toList();
     }
 
@@ -34,7 +36,7 @@ public class UserService {
 
             User savedUser = repository.save(user);
 
-            return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getAge());
+            return mapToResponse(savedUser);
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
