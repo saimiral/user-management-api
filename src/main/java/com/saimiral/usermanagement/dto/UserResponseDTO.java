@@ -8,6 +8,12 @@ public class UserResponseDTO {
 
     private int age;
 
+    public UserResponseDTO(Long id, String name, int age){
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
     public int getAge() {
         return age;
     }

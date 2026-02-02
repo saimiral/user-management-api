@@ -23,11 +23,7 @@ public class UserService {
         return repository.findAll()
                 .stream()
                 .map(user -> {
-                    UserResponseDTO dto = new UserResponseDTO();
-                    dto.setId(user.getId());
-                    dto.setName(user.getName());
-                    dto.setAge(user.getAge());
-                    return dto;
+                    return new UserResponseDTO(user.getId(), user.getName(), user.getAge());;
                 })
                 .toList();
     }
@@ -38,12 +34,7 @@ public class UserService {
 
             User savedUser = repository.save(user);
 
-            UserResponseDTO response = new UserResponseDTO();
-            response.setId(savedUser.getId());
-            response.setName(savedUser.getName());
-            response.setAge(savedUser.getAge());
-
-            return response;
+            return new UserResponseDTO(savedUser.getId(), savedUser.getName(), savedUser.getAge());
         } catch(DataIntegrityViolationException ex) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
