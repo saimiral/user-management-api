@@ -10,7 +10,6 @@ import com.saimiral.usermanagement.exception.UserNotFoundException;
 import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,10 @@ public class UserServiceImpl implements UserService{
 
     @Transactional(readOnly = true)
     public PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable){
+
+        if(pageable.getPageSize() > 50){
+            throw new IllegalArgumentException("Page size cannot exceed 50");
+        }
 
         Page<User> page = repository.findAll(pageable);
 
