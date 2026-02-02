@@ -1,8 +1,11 @@
 package com.saimiral.usermanagement.service;
 
 import com.saimiral.usermanagement.entity.User;
+import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
@@ -19,6 +22,10 @@ public class UserService {
     }
 
     public User saveUser(User user){
-        return repository.save(user);
+        try {
+            return repository.save(user);
+        } catch(DataIntegrityViolationException ex) {
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
     }
 }
