@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    public void deleteUSer(Long id){
+    public void deleteUser(Long id){
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
