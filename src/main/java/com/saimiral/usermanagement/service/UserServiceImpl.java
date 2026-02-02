@@ -1,5 +1,6 @@
 package com.saimiral.usermanagement.service;
 
+import com.saimiral.usermanagement.dto.PagedResponse;
 import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.dto.UserUpdateDTO;
@@ -8,10 +9,12 @@ import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.exception.UserNotFoundException;
 import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -28,12 +31,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponseDTO> getAllUsers(){
-        return repository.findAll()
+    public PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable){
+
+        Page<User> page = repository.findAll(pageable);
+
+        List<UserResponseDTO> users = page.getContent()
                 .stream()
                 .map(mapper::toResponse)
-
                 .toList();
+
+        return new PagedResponse<>(
+                users,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
     public UserResponseDTO saveUser(UserCreateDTO dto){
