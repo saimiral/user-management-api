@@ -22,8 +22,13 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<PagedResponse<UserResponseDTO>> getAllUsers(@PageableDefault(size = 10, sort = "id") Pageable pageable){
-        return ResponseEntity.ok(service.getAllUsers(pageable));
+    public ResponseEntity<PagedResponse<UserResponseDTO>> getAllUsers (@RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable){
+
+        return ResponseEntity.ok(
+                service.getAllUsers(pageable, minAge, maxAge)
+        );
     }
 
     @PostMapping("/users")

@@ -7,7 +7,6 @@ import com.saimiral.usermanagement.dto.UserUpdateDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-    PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable);
     UserResponseDTO saveUser(UserCreateDTO dto);
 
     void deleteUser(Long id);
@@ -16,4 +15,5 @@ public interface UserService {
 
     UserResponseDTO getUserById(Long id);
 
+    PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable, Integer minAge, Integer maxAge);
 }

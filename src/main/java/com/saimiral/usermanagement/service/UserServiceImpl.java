@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService{
@@ -27,29 +29,6 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
-    }
-
-    @Transactional(readOnly = true)
-    public PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable){
-
-        if(pageable.getPageSize() > 50){
-            throw new IllegalArgumentException("Page size cannot exceed 50");
-        }
-
-        Page<User> page = repository.findAll(pageable);
-
-        List<UserResponseDTO> users = page.getContent()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
-
-        return new PagedResponse<>(
-                users,
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages()
-        );
     }
 
     public UserResponseDTO saveUser(UserCreateDTO dto){
@@ -85,5 +64,33 @@ public class UserServiceImpl implements UserService{
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return mapper.toResponse(user);
+    }
+
+    public PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable, Integer minAge, Integer maxAge){
+        Page<User> page;
+
+        if(minAge != null && maxAge != null){
+
+            if(minAge > maxAge){
+                throw new IllegalArgumentException("Age minimum cannot be greater than age maximum");
+            }
+
+            page = repository.findByAgeBetween(minAge, maxAge, pageable);
+
+        }else{
+            page = repository.findAll(pageable);
+        }
+        List<UserResponseDTO> user =
+                page.getContent()
+                        .stream()
+                        .map(mapper::toResponse)
+                        .toList();
+        return new PagedResponse<>(
+                user,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 }
