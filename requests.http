@@ -1,11 +1,14 @@
 ### GET USERS
 GET http://localhost:8080/users
+Authorization: Basic Ym9zczEyM0B0ZXN0LmNvbToxMjM0NTY=
 
 ### CREATE USER
 POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "name": "George",
-  "age": 29
+  "name": "Boss",
+  "age": 40,
+  "email": "boss123@test.com",
+  "password": "123456"
 }

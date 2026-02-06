@@ -1,8 +1,6 @@
 package com.saimiral.usermanagement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -15,11 +13,18 @@ public class User {
 
     private int age;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
     public User() {}
 
-    public User(String name, int age) {
+    public User(String name, int age, String email) {
         this.name = name;
         this.age = age;
+        this.email = email;
     }
 
     public Long getId() {
@@ -44,5 +49,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

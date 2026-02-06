@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(){
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex){
 
         ErrorResponse error = new ErrorResponse(
                 "Internal server error",

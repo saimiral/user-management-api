@@ -10,6 +10,7 @@ import com.saimiral.usermanagement.exception.UserNotFoundException;
 import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,23 +18,25 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @Transactional
 public class UserServiceImpl implements UserService{
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository, UserMapper mapper) {
+    public UserServiceImpl(UserRepository repository, UserMapper mapper, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public UserResponseDTO saveUser(UserCreateDTO dto){
         try {
-            User user = new User(dto.getName(), dto.getAge());
+            User user = new User(dto.getName(), dto.getAge(), dto.getEmail());
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
             User savedUser = repository.save(user);
 

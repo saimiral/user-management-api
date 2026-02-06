@@ -6,7 +6,6 @@ import com.saimiral.usermanagement.dto.UserCreateDTO;
 import com.saimiral.usermanagement.dto.UserResponseDTO;
 import com.saimiral.usermanagement.dto.UserUpdateDTO;
 import com.saimiral.usermanagement.service.UserService;
-import com.saimiral.usermanagement.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     private final UserService service;
 
@@ -21,7 +21,7 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<PagedResponse<UserResponseDTO>> getAllUsers (@RequestParam(required = false) Integer minAge,
             @RequestParam(required = false) Integer maxAge,
             @PageableDefault(size = 10, sort = "id") Pageable pageable){
@@ -31,7 +31,7 @@ public class UserController {
         );
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public UserResponseDTO createUser(@Valid @RequestBody UserCreateDTO dto){
         return service.saveUser(dto);
     }
@@ -48,8 +48,9 @@ public class UserController {
         return ResponseEntity.ok(updateUser);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
         return ResponseEntity.ok(service.getUserById(id));
     }
+
 }
