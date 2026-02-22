@@ -3,12 +3,25 @@ GET http://localhost:8080/users
 Authorization: Basic Ym9zczEyM0B0ZXN0LmNvbToxMjM0NTY=
 
 ### CREATE USER
-POST http://localhost:8080/users
+POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
   "name": "Boss",
   "age": 40,
   "email": "boss123@test.com",
-  "password": "123456"
+  "password": "1234"
 }
+
+### LOGIN USER
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "username": "boss123@test.com",
+  "password": "1234"
+}
+
+### GET USERS 2
+GET http://localhost:8080/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3NzMTIzQHRlc3QuY29tIiwiaWF0IjoxNzcxODAxMjE0LCJleHAiOjE3NzE4ODc2MTR9.4TEPgm6eeqaO7veTgI7HBEtEKCtVhTMdHTOQBTwyNTc
