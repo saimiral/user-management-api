@@ -1,5 +1,6 @@
 package com.saimiral.usermanagement.controller;
 
+import com.saimiral.usermanagement.dto.AuthResponse;
 import com.saimiral.usermanagement.dto.LoginRequest;
 import com.saimiral.usermanagement.dto.RegisterRequest;
 import com.saimiral.usermanagement.service.AuthService;
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public  String login(@RequestBody LoginRequest request){
-        return authService.login(request.getUsername(), request.getPassword());
+    public AuthResponse login(@RequestBody LoginRequest request){
+        return authService.login(request.getEmail(), request.getPassword());
     }
 }

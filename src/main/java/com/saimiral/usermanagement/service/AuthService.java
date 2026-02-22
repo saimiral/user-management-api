@@ -1,5 +1,6 @@
 package com.saimiral.usermanagement.service;
 
+import com.saimiral.usermanagement.dto.AuthResponse;
 import com.saimiral.usermanagement.dto.RegisterRequest;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.repository.UserRepository;
@@ -26,10 +27,11 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(String username, String password){
+    public AuthResponse login(String username, String password){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-        return jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(userDetails);
+        return new AuthResponse(token, userDetails.getUsername());
     }
 
     public void register(RegisterRequest request){

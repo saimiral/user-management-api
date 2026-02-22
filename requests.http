@@ -1,7 +1,3 @@
-### GET USERS
-GET http://localhost:8080/users
-Authorization: Basic Ym9zczEyM0B0ZXN0LmNvbToxMjM0NTY=
-
 ### CREATE USER
 POST http://localhost:8080/auth/register
 Content-Type: application/json
