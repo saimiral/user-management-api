@@ -3,6 +3,7 @@ package com.saimiral.usermanagement.service;
 import com.saimiral.usermanagement.dto.AuthResponse;
 import com.saimiral.usermanagement.dto.RegisterRequest;
 import com.saimiral.usermanagement.entity.User;
+import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
 import com.saimiral.usermanagement.security.CustomUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +37,7 @@ public class AuthService {
 
     public void register(RegisterRequest request){
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new RuntimeException("User already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
         User user = new User();
         user.setName(request.getName());

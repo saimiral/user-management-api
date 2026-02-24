@@ -18,6 +18,6 @@ Content-Type: application/json
   "password": "1234"
 }
 
-### GET USERS 2
-GET http://localhost:8080/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3NzMTIzQHRlc3QuY29tIiwiaWF0IjoxNzcxODAxMjE0LCJleHAiOjE3NzE4ODc2MTR9.4TEPgm6eeqaO7veTgI7HBEtEKCtVhTMdHTOQBTwyNTc
+### GET USERS
+GET http://localhost:8080/users/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3NzMTIzQHRlc3QuY29tIiwiaWF0IjoxNzcxOTY4MTgxLCJleHAiOjE3NzIwNTQ1ODF9.bsltkH51zs0d5HRMWl3e8BiCHrL5VK_qM2Zh8XrkgTo

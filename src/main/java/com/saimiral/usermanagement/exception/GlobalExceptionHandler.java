@@ -2,6 +2,7 @@ package com.saimiral.usermanagement.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,19 +40,6 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex){
-
-        ErrorResponse error = new ErrorResponse(
-                "Internal server error",
-                HttpStatus.INTERNAL_SERVER_ERROR.value()
-        );
-
-        return  ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(error);
-    }
-
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailExists(EmailAlreadyExistsException ex){
 
@@ -75,6 +63,30 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex){
+        ErrorResponse error = new ErrorResponse(
+                "Invalid email or password",
+                HttpStatus.UNAUTHORIZED.value()
+        );
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex){
+
+        ErrorResponse error = new ErrorResponse(
+                "Internal server error",
+                HttpStatus.INTERNAL_SERVER_ERROR.value()
+        );
+
+        return  ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(error);
     }
 }
