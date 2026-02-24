@@ -96,4 +96,10 @@ public class UserServiceImpl implements UserService{
                 page.getTotalPages()
         );
     }
+
+    public User getUserByEmail(String email){
+
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
 }

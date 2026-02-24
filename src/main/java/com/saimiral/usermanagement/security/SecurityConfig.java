@@ -25,27 +25,6 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//                // DEV ONLY – required for H2 console
-//                .csrf(csrf -> csrf.disable())
-//                .authenticationProvider(authenticationProvider())
-//                // DEV ONLY – required for H2 console
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/h2-console/**").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                // DEV ONLY – required for H2 console
-//                .headers(headers -> headers
-//                        .frameOptions(frame -> frame.disable()));
-//
-//
-//        return http.build();
-//    }
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -56,7 +35,9 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             )
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/h2-console/**").permitAll() // αν χρησιμοποιείς H2
+                    .requestMatchers("/h2-console/**").permitAll() // Για H2
+                    .requestMatchers("/users/me").authenticated()
+                    .requestMatchers("/users/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

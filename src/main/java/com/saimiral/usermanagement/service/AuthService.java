@@ -2,6 +2,7 @@ package com.saimiral.usermanagement.service;
 
 import com.saimiral.usermanagement.dto.AuthResponse;
 import com.saimiral.usermanagement.dto.RegisterRequest;
+import com.saimiral.usermanagement.entity.Role;
 import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.repository.UserRepository;
@@ -44,6 +45,7 @@ public class AuthService {
         user.setAge(request.getAge());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.ROLE_USER);
 
         userRepository.save(user);
     }

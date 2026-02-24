@@ -1,14 +1,13 @@
 package com.saimiral.usermanagement.controller;
 
 
-import com.saimiral.usermanagement.dto.PagedResponse;
-import com.saimiral.usermanagement.dto.UserCreateDTO;
-import com.saimiral.usermanagement.dto.UserResponseDTO;
-import com.saimiral.usermanagement.dto.UserUpdateDTO;
+import com.saimiral.usermanagement.dto.*;
+import com.saimiral.usermanagement.entity.User;
 import com.saimiral.usermanagement.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +15,11 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("/users")
 public class UserController {
     private final UserService service;
+    private final UserService userService;
 
-    public UserController(UserService service) {
+    public UserController(UserService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -48,9 +49,22 @@ public class UserController {
         return ResponseEntity.ok(updateUser);
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
         return ResponseEntity.ok(service.getUserById(id));
+    }
+
+    @GetMapping("/me")
+    public UserResponseDTO getCurrentUser(Authentication authentication){
+        String email = authentication.getName();
+        User user = userService.getUserByEmail(email);
+
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getAge(),
+                user.getEmail()
+        );
     }
 
 }

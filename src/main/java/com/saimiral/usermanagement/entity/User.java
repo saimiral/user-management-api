@@ -19,6 +19,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public User() {}
 
     public User(String name, int age, String email) {
@@ -66,4 +69,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Role getRole() { return role; }
+
+    public void setRole(Role role) { this.role = role; }
 }

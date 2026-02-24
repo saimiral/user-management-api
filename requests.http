@@ -19,5 +19,5 @@ Content-Type: application/json
 }
 
 ### GET USERS
-GET http://localhost:8080/users/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3NzMTIzQHRlc3QuY29tIiwiaWF0IjoxNzcxOTY4MTgxLCJleHAiOjE3NzIwNTQ1ODF9.bsltkH51zs0d5HRMWl3e8BiCHrL5VK_qM2Zh8XrkgTo
+GET http://localhost:8080/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwic3ViIjoiYm9zczEyM0B0ZXN0LmNvbSIsImlhdCI6MTc3MTk3MTgyNiwiZXhwIjoxNzcyMDU4MjI2fQ.cIZHzHLQPIW-6AVNE7lJ8hKvlivfBOogQIpQHyU0qrk
