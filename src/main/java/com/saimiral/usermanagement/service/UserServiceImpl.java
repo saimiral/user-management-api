@@ -9,7 +9,9 @@ import com.saimiral.usermanagement.exception.EmailAlreadyExistsException;
 import com.saimiral.usermanagement.exception.UserNotFoundException;
 import com.saimiral.usermanagement.mapper.UserMapper;
 import com.saimiral.usermanagement.repository.UserRepository;
+import com.saimiral.usermanagement.specification.UserSpecification;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -70,24 +72,22 @@ public class UserServiceImpl implements UserService{
     }
 
     public PagedResponse<UserResponseDTO> getAllUsers(Pageable pageable, Integer minAge, Integer maxAge){
-        Page<User> page;
-
-        if(minAge != null && maxAge != null){
-
-            if(minAge > maxAge){
-                throw new IllegalArgumentException("Age minimum cannot be greater than age maximum");
-            }
-
-            page = repository.findByAgeBetween(minAge, maxAge, pageable);
-
-        }else{
-            page = repository.findAll(pageable);
+        if(minAge != null && maxAge != null && minAge > maxAge){
+            throw new IllegalArgumentException("Age minimum cannot be greater than age maximum");
         }
+
+        Specification<User> spec = Specification
+                .where(UserSpecification.ageGreaterThan(minAge))
+                .and(UserSpecification.ageLessThan(maxAge));
+
+        Page<User> page = repository.findAll(spec, pageable);
+
         List<UserResponseDTO> user =
                 page.getContent()
                         .stream()
                         .map(mapper::toResponse)
                         .toList();
+
         return new PagedResponse<>(
                 user,
                 page.getNumber(),
@@ -98,7 +98,6 @@ public class UserServiceImpl implements UserService{
     }
 
     public User getUserByEmail(String email){
-
         return repository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
