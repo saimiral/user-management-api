@@ -35,12 +35,15 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             )
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/h2-console/**").permitAll() // Για H2
                     .requestMatchers("/users/me").authenticated()
                     .requestMatchers("/users/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
     // Για H2 console
     http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
